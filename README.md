@@ -1,2 +1,2 @@
-# MLBox
-resources for machine learning
+# MLExp
+resources for machine learning experiment
