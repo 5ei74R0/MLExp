@@ -11,7 +11,7 @@ resources for machine learning experiments
 - see also [here](https://python-poetry.org/docs/cli/) to know about commands of Poetry.
 
 #### use `pip`
-- do `pip install requirements.txt`
+- do `python3 -m pip install requirements.txt`
   - you cannot get development dependencies with this command
 
 ### Install this repository as the package `mlexp`
