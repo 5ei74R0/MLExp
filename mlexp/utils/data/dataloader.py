@@ -42,7 +42,7 @@ class ReproducibleDataLoader(DataLoader):
 
         Args:
             dataset (Dataset[T_co]): same as torch.utils.data.dataloader
-            specified_seed (int): same as torch.utils.data.dataloader
+            specified_seed (int): fix seed for reproducibility
             batch_size (Optional[int], optional): same as torch.utils.data.dataloader. Defaults to 1.
             shuffle (bool, optional): same as torch.utils.data.dataloader. Defaults to False.
             sampler (Optional[Sampler[int]], optional): same as torch.utils.data.dataloader. Defaults to None.
