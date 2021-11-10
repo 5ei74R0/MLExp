@@ -1,7 +1,17 @@
-name: CI/CD
+name: CI/CD for python code
 on:
   push:
+    paths:
+      - "mlexp/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - "pyproject.lock"
   pull_request:
+    paths:
+      - "mlexp/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - "pyproject.lock"
 
 jobs:
   test:
