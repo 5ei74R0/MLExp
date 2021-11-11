@@ -1,7 +1,7 @@
 # MLExp
 resources for machine learning experiments
 
-![](https://github.com/OtsuKotsu/MLExp/workflows/ci_cd/badge.svg)
+![](https://github.com/OtsuKotsu/MLExp/actions/workflows/ci_cd.yml/badge.svg)
 
 ## Installation
 ### Install dependencies of this repository
