@@ -1,22 +1,51 @@
-from typing import Dict, Tuple
+from typing import Tuple
 
 import pytest
 from torch import nn
 
 from mlexp import experiment
+from mlexp.experiment.runner import metrics_t
 
+# global param
 call_counter: int = 0
+
+# mock metrics
+most_simple_metrics: metrics_t = 0.3
+general_metrics: metrics_t = {
+    "train": {
+        "acc": 0.56,
+        "loss": 1.6489,
+    },
+    "validation": {
+        "acc": 0.49,
+        "loss": 1.8979,
+    },
+}
+complicated_metrics: metrics_t = {
+    "train": {
+        "acc": {
+            "model_a": 0.30,
+            "model_b": 0.56,
+            "model_c": {"case1": 0.43, "case2": 0.46},
+        },
+        "loss": 1.6489,
+    },
+    "validation": {
+        "average acc": 0.49,
+        "loss": 1.8979,
+    },
+}
 
 
 @pytest.mark.parametrize(
-    ("epochs"),
+    ("epochs", "metrics"),
     [
-        3,
-        5,
-        10,
+        (3, most_simple_metrics),  # case1. type(metrics) == float
+        (5, general_metrics),
+        (10, complicated_metrics),
     ],
 )
-def test_run_decorator(epochs):
+def test_run_decorator(epochs, metrics):
 
     global call_counter
     call_counter = 0
@@ -28,28 +57,12 @@ def test_run_decorator(epochs):
         tags={"tag1": 1},
         epochs=epochs,
     )
-    def train_fn_mock() -> Tuple[nn.Module, Dict[str, float], Dict[str, float]]:
+    def train_fn_mock(mtrc: metrics_t) -> Tuple[nn.Module, metrics_t]:
         m = nn.Linear(10, 5)
-        train_metric_mock1 = 0.1
-        train_metric_mock2 = 0.2
-        train_metric_mock3 = 0.3
-        validation_metric_mock1 = 0.1
-        validation_metric_mock2 = 0.2
-        validation_metric_mock3 = 0.3
-        train_metrics = {
-            "train_metric_mock1": train_metric_mock1,
-            "train_metric_mock2": train_metric_mock2,
-            "train_metric_mock3": train_metric_mock3,
-        }
-        validation_metrics = {
-            "validation_metric_mock1": validation_metric_mock1,
-            "validation_metric_mock2": validation_metric_mock2,
-            "validation_metric_mock3": validation_metric_mock3,
-        }
         global call_counter
         call_counter += 1
-        return m, train_metrics, validation_metrics
+        return m, mtrc
 
-    train_fn_mock()
+    train_fn_mock(metrics)
 
     assert call_counter == epochs
