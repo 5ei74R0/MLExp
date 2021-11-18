@@ -8,8 +8,47 @@ metrics_t = Union[Mapping[str, "metrics_t"], float]  # type: ignore  # recursive
 
 class run:
     """
-    decorator that decorate an function for training and validation loop
+    decorator that decorates an function for training and validation loop
     in order to repetitively run the loop and observe metrics in every epoch with mlflow
+
+    Example:
+        target function should return the `tuple[object, metrics_t]`\\
+        where `metrics_t = Mapping[str, metrics_t] | float`\\
+        it means metrics_t could be `float`, `dict[str, float]`,\\
+        and more complicated recursive nest could also be accommodated\\
+        such as `dict[dict[..[dict[str, float], float]]]`\\
+        and you can put anything in the first element
+        (In most cases, you may put your trained model here)\\
+        for instance, the following code is available::
+
+            @mlexp.experiment.run(
+                exp1,
+                running1,
+                params={
+                    "p1": 1,
+                },
+                tags={
+                    "tag1": 1,
+                },
+                epochs=10,
+            )
+            def fn():
+                metrics = {
+                    "train": {
+                        "acc": {
+                            "model_a": 0.30,
+                            "model_b": 0.56,
+                            "average": 0.43,
+                        },
+                        "loss": 1.6489,
+                    },
+                    "validation": {
+                        "average acc": 0.49,
+                        "loss": 1.8979,
+                    },
+                }
+                return 1, metrics
+
     """
 
     def __init__(
@@ -31,45 +70,6 @@ class run:
             params (`Dict[str, Any]`): Used as `mlflow.log_params(params)`
             tags (`Dict[str, Any]`): Used as `mlflow.set_tags(tags)`
             epochs (`int`): Number of epochs to run training and validation loop
-
-        Example:
-            target function should return the `tuple[object, metrics_t]`\\
-            where `metrics_t = Mapping[str, metrics_t] | float`\\
-            it means metrics_t could be `float`, `dict[str, float]`,\\
-            and more complicated recursive nest could also be accommodated\\
-            such as `dict[dict[..[dict[str, float], float]]]`\\
-            and you can put anything in the first element
-            (In most cases, you may put your trained model here)\\
-            for instance, the following code is available::
-
-                    @mlexp.experiment.run(
-                        exp1,
-                        running1,
-                        params={
-                            "p1": 1,
-                        },
-                        tags={
-                            "tag1": 1,
-                        },
-                        epochs=10,
-                    )
-                    def fn():
-                        metrics = {
-                            "train": {
-                                "acc": {
-                                    "model_a": 0.30,
-                                    "model_b": 0.56,
-                                    "average": 0.43,
-                                },
-                                "loss": 1.6489,
-                            },
-                            "validation": {
-                                "average acc": 0.49,
-                                "loss": 1.8979,
-                            },
-                        }
-                        return 1, metrics
-
         """
         self.experiment_name = experiment_name
         self.run_name = run_name
