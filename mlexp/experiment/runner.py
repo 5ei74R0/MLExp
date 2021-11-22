@@ -88,7 +88,7 @@ class run:
             mlflow.set_experiment(self.experiment_name)
             with mlflow.start_run(run_name=self.run_name):
                 self._recursive_params_logging(self.params)
-                self._recursive_tags_seting(self.tags)
+                self._recursive_tags_setting(self.tags)
 
                 # run epochs
                 for step in range(1, self.epochs + 1):
@@ -129,7 +129,7 @@ class run:
             n_prefix = prefix + self.prefix_connector + key if prefix != "" else key
             self._recursive_params_logging(sub_params, prefix=n_prefix)
 
-    def _recursive_tags_seting(
+    def _recursive_tags_setting(
         self,
         tags: nested_dict_t,
         prefix: str = "",
@@ -142,4 +142,4 @@ class run:
 
         for key, sub_params in tags.items():
             n_prefix = prefix + self.prefix_connector + key if prefix != "" else key
-            self._recursive_tags_seting(sub_params, prefix=n_prefix)
+            self._recursive_tags_setting(sub_params, prefix=n_prefix)
