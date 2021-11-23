@@ -24,6 +24,7 @@ class SimpleDataset(Dataset):
 
 class SimpleClassifier(torch.nn.Module):
     """(batchsize, 1) -> (batchsize, 2)"""
+
     def __init__(self):
         super(SimpleClassifier, self).__init__()
         self.internal_dim = 10
