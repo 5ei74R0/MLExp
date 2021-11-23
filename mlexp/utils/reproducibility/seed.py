@@ -6,7 +6,7 @@ import torch
 SEED = 3407
 
 
-def fix_random_seed(specified_seed: int = SEED):
+def fix_random_seeds(specified_seed: int = SEED):
     """fix random seed of torch, numpy, python
 
     Args:
