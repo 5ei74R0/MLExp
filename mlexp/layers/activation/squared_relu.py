@@ -5,11 +5,15 @@ from torch.nn import functional as F
 
 
 class SquaredReLU(nn.Module):
-    def __init__(self, inplace=False):
+    """
+    Squared ReLU layer. proposed in "Primer: Searching for Efficient Transformers for Language Modeling"\\
+    This Layer is implemented by using `F.relu` directly and goes fast.
+    """
+
+    def __init__(self, inplace=True):
         super(SquaredReLU, self).__init__()
         self.inplace = inplace
 
-    @torch.jit.script
     def forward(self, inputs: torch.Tensor) -> torch.Tensor:
         x = F.relu(inputs, inplace=self.inplace)
         return x * x
