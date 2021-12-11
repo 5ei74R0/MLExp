@@ -7,6 +7,16 @@ T = TypeVar("T")
 
 
 def nested_dict2dict(nested_dict: nested_dict_t[T], key_connector: str) -> dict[str, T]:
+    """Return dict converted from nested_dict
+
+    Args:
+        nested_dict (nested_dict_t[T]): `nested_dict_t` type variable
+        key_connector (str): Connect key and key
+
+    Returns:
+        dict[str, T]: Converted dict
+    """
+
     def _rec(nested_dict: nested_dict_t, target: dict, key: str = "") -> None:
         if not isinstance(nested_dict, Mapping):
             target[key] = nested_dict
