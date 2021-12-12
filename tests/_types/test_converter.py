@@ -27,6 +27,6 @@ from mlexp._types.converter import nested_dict2dict
         ),
     ],
 )
-def test_nested_dict2dict(nested_dict: nested_dict_t[int], dic: dict):
-    produced: dict[str, int] = nested_dict2dict(nested_dict, key_connector="-")
+def test_nested_dict2dict(nested_dict: nested_dict_t[int], dic: "dict"):
+    produced: "dict[str, int]" = nested_dict2dict(nested_dict, key_connector="-")
     assert produced == dic
